@@ -253,7 +253,7 @@
 ## Шаг 15: загрузка необходимых Docker образов из локального репозитория ОС в кластер minikube
 
  ```bash
- minikube image load nginx
+ minikube image load custom-nginx
  minikube image load nginx/nginx-prometheus-exporter
  ```
   
