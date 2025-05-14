@@ -9,7 +9,7 @@
 > Все команды, указанные в инструкции, выполняются в терминале установленной на шаге 1 виртуальной машины `VirtualBox`, за исключением случаем, когда явно указано где их выполнять.
 
 
-# Шаг 1: установка VirtualBox (версия 7.1.6).
+## Шаг 1: установка VirtualBox (версия 7.1.6).
 
  На хосте (ПК):
 
@@ -28,7 +28,7 @@
  ```
  
 
-# Шаг 2: создание виртуальной машины (VirtualBox), с ОС Ubuntu Server 24.04.2 LTS.
+## Шаг 2: создание виртуальной машины (VirtualBox), с ОС Ubuntu Server 24.04.2 LTS.
 
   При создании VirtualBox:
   
@@ -45,20 +45,20 @@
   При установке, выбрать минимальную установку (docker не устанавливать).
   Размета диска: один раздел на весь диск, без использования `LVM` и шифрования.
   
-# Шаг 3: добавление созданного при установке ОС пользователя в группу sudo.
+## Шаг 3: добавление созданного при установке ОС пользователя в группу sudo.
 
  ```bash
  usermod -aG sudo <username>
  ```
   
-# Шаг 4: базовая настройка firewall (ufw).
+## Шаг 4: базовая настройка firewall (ufw).
 
  ```bash
  sudo ufw default deny
  sudo ufw enable 
  ```
 
-# Шаг 5: установка и настройка openssh-server.
+## Шаг 5: установка и настройка openssh-server.
 
  ```bash
  sudo apt update
@@ -93,7 +93,7 @@
  sudo ufw limit proto tcp from 192.168.57.0/24 to 192.168.57.77 port 11111
  ```
  
-# Шаг 6: настройка сети
+## Шаг 6: настройка сети
 
  1. Открываем файл `50-cloud-init.yaml` в директории `/etc/netplan`:
   
@@ -136,7 +136,7 @@
  sudo netplan apply
  ```
   
-# Шаг 7: копирование файлов проекта с хоста (ПК) на VirtualBox.
+## Шаг 7: копирование файлов проекта с хоста (ПК) на VirtualBox.
 
  **На хосте (ПК):**
 
@@ -152,14 +152,14 @@
  ```
 
 
-# Шаг 8: установка необходимых утилит
+## Шаг 8: установка необходимых утилит
 
  ```bash
  sudo apt update
  sudo apt install cat nano vim wget -y
  ```
  
-# Шаг 9: установка Docker Engine
+## Шаг 9: установка Docker Engine
 
  ```bash
  # Add Docker's official GPG key:
@@ -187,7 +187,7 @@
  sudo usermod -aG docker $USER && newgrp docker
  ``` 
        
-# Шаг 10: установка kubectl
+## Шаг 10: установка kubectl
 
  ```bash
  sudo apt-get update
@@ -203,22 +203,22 @@
  sudo apt-get install -y kubectl
  ```  
 
-# Шаг 11: загрузка необходимых Docker образов из удаленного реестра (Docker Hub)
+## Шаг 11: загрузка необходимых Docker образов из удаленного реестра (Docker Hub)
 
-## nginx образ
+### nginx образ
 
  ```bash
  docker image pull nginx
  ```
  
-## nginx-prometheus-exporter образ
+### nginx-prometheus-exporter образ
 
   ```bash
   docker image pull nginx/nginx-prometheus-exporter
   ```
 
 
-# Шаг 12: построение кастомного образа Docker nginx
+## Шаг 12: построение кастомного образа Docker nginx
 
  1. Необходимо перейти в домашнюю директорию, в которую, предварительно, загружены файлы проекта (из каталога `project_files`).
  2. Перейти в каталог `docker_nginx`.
@@ -229,7 +229,7 @@
  ```
 
  
-# Шаг 13: установка minikube 
+## Шаг 13: установка minikube 
 
  ```bash
  curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
@@ -238,26 +238,26 @@
  ```
 
  
-# Шаг 14: запуск, инициализация и доустановка необходимых компонентов minikube 
+## Шаг 14: запуск, инициализация и доустановка необходимых компонентов minikube 
 
  ```bash
  minikube start --driver=docker
  ```
  
-## включение поддержки и установка дополнения 'ingress'
+### включение поддержки и установка дополнения 'ingress'
  
  ```bash
  minikube addons enable ingress
  ```
 
-# Шаг 15: загрузка необходимых Docker образов из локального репозитория ОС в кластер minikube
+## Шаг 15: загрузка необходимых Docker образов из локального репозитория ОС в кластер minikube
 
  ```bash
  minikube image load nginx
  minikube image load nginx/nginx-prometheus-exporter
  ```
   
-# Шаг 16: создание deployments, services, ingresses 
+## Шаг 16: создание deployments, services, ingresses 
 
  Cоздание deployments, services, ingresses нашего проекта, 
  из файлов манифестов (.yaml) в каталоге `.web-nginx-mk/` (предварительно загруженные), в домашней директории ОС:
@@ -269,9 +269,9 @@
  ```
  
  
-# Шаг 17: установка Prometheus и Grafana в minikube используя Helm
+## Шаг 17: установка Prometheus и Grafana в minikube используя Helm
 
-## установка Helm
+### установка Helm
 
  ```bash
  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3```
@@ -280,7 +280,7 @@
  rm ./get_helm.sh
  ```
 
-## добавление необходимых репозиториев
+### добавление необходимых репозиториев
 
  ```bash
  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts```
@@ -288,19 +288,19 @@
  helm repo update
  ```
  
-## установка prometheus
+### установка prometheus
 
  ```bash
  helm install prometheus prometheus-community/prometheus -f $HOME/.prometheus/values.yaml
  ```
 
-## установка grafana
+### установка grafana
 
  ```bash
  helm install grafana grafana/grafana
  ```
 
-# Шаг 18: создание ingress для Grafana
+## Шаг 18: создание ingress для Grafana
 
   Создание ingress для Grafana, из файла манифеста (.yaml), в каталоге `.grafana/` (предварительно загруженный), из домашней директории ОС `VirtualBox`:
 
@@ -309,7 +309,7 @@
  ```
 
 
-# Шаг 19: Настраиваем фаейрвол (iptables)
+## Шаг 19: Настраиваем фаейрвол (iptables)
   
  Настраиваем фаейрвол на виртуальной машине `VirtualBox` (c установленным кластером `minikube`), 
  для доступа к `nginx` и `grafana` (через curl или веб браузер) с хоста (ПК), на
@@ -351,7 +351,7 @@ sudo sysctl -p
 sudo systemctl restart ufw
 ```
 
-# Шаг 20: настройка доступа к grafana или nginx сервису из VirtualBox
+## Шаг 20: настройка доступа к grafana или nginx сервису из VirtualBox
 
  Необходимо добавить в файл /etc/hosts на виртуальной машине VirtualBox (c установленным кластером minikube), в которой будет выполняться внешний запрос (curl или веб браузер) 
  к grafana  или nginx сервису.
@@ -364,7 +364,7 @@ sudo systemctl restart ufw
  , где `192.168.49.2` - ip адрес назначенный `ingress` (посмотреть точный ip адрес, можно выполнив следующую команду: ```bash kubectl get ingress```, в терминале виртуальной машины `VirtualBox`, на которой установлен кластер `minikube`).
 
 
-# Шаг 21: настройка доступа к grafana или nginx сервису с хоста (ПК)
+## Шаг 21: настройка доступа к grafana или nginx сервису с хоста (ПК)
 
  Для выполнения внешнего запроса (curl или веб браузер) к grafana или nginx сервису, с хоста (ПК), с установленной на нем виртуальной машины VirtualBox (c установленным кластером
  minikube), необходимо добавить в файл /etc/hosts, на хосте (ПК), указанные строки (данные правила необходимы только для указанного доступа):
@@ -378,7 +378,7 @@ sudo systemctl restart ufw
  (тип соединение с хостом (ПК):  мост (bridge)).
  
  
-# Шаг 22: настройка визуализации мониторинга в Grafana 
+## Шаг 22: настройка визуализации мониторинга в Grafana 
 
  Действия выполняются на хосте (ПК), на котором установлена VirtualBox (c установленным кластером `minikube`).
  
@@ -407,7 +407,7 @@ sudo systemctl restart ufw
   
 
 
-# Доступ к развернутым ресурсам:
+## Доступ к развернутым ресурсам:
 
  *доступ к серверу nginx (curl или веб браузер) можно получить по ссылке:* `http://web-nginx-mk.localcluster.mk`
  
