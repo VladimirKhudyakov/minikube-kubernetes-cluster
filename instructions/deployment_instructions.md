@@ -361,7 +361,7 @@ sudo systemctl restart ufw
  192.168.49.2 grafana.localcluster.mk
  ```
  
- , где `192.168.49.2` - ip адрес назначенный `ingress` (посмотреть точный ip адрес, можно выполнив следующую команду: ```bash kubectl get ingress```, в терминале виртуальной машины `VirtualBox`, на которой установлен кластер `minikube`).
+ , где `192.168.49.2` - ip адрес назначенный `ingress` (посмотреть точный ip адрес, можно выполнив следующую команду: ```kubectl get ingress```, в терминале виртуальной машины `VirtualBox`, на которой установлен кластер `minikube`).
 
 
 ## Шаг 21: настройка доступа к grafana или nginx сервису с хоста (ПК)
@@ -385,7 +385,7 @@ sudo systemctl restart ufw
  1. Открываем web-интерфейс Grafana в web-браузере (ссылка: http://grafana.localcluster.mk)
  
  2. Для получения пароля, в терминале виртуальной машины `VirtualBox` (c установленным кластером `minikube`) вводим команду:
-  ```bash kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo```
+  ```kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo```
   (вывод команды - является паролем).
    
  3. Вводим в web-интерфейсе пароль `admin` и пароль (получен в пункте 2).
